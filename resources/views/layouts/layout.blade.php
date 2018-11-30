@@ -18,7 +18,19 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        @guest
+        <ul class="navbar-nav navbar-right">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+          </li>
+          <li class="nav-item active">
+            @if (Route::has('register'))
+                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+            @endif
+          </li>
+        </ul>
 
+        @else
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="/PetShop/public">Home <span class="sr-only">(current)</span></a>
@@ -37,17 +49,27 @@
         <ul class="navbar-nav navbar-right">
           <li class="nav-item dropdown">
              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-               Olá, Usuário
+               Olá, {{ Auth::user()->name }}!
              </a>
              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                <a class="dropdown-item" href="#">Minha Conta</a>
                <a class="dropdown-item" href="#">Meu Carrinho</a>
-               <a class="dropdown-item" href="#">Sair</a>
+               <a class="dropdown-item" href="{{ route('logout') }}"
+                  onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
+                   {{ __('Sair') }}
+               </a>
+
+               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                   @csrf
+               </form>
              </div>
          </li>
+         @endguest
       </ul>
 
     </div>
+
 </nav>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
